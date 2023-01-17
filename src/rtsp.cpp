@@ -63,13 +63,13 @@ void rtspTask(void *pvParameters)
 	uint32_t msecPerFrame = 50;
 	static uint32_t lastimage = millis();
 
-	// rtspServer.setNoDelay(true);
+	//rtspServer.setNoDelay(true);
 	rtspServer.setTimeout(1);
 	rtspServer.begin();
 
 	while (1)
 	{
-		// If we have an active client connection, just service that until gone
+		//Check if we have an active client connection
 		if (session)
 		{
 			session->handleRequests(0); // we don't use a timeout here,
@@ -92,6 +92,7 @@ void rtspTask(void *pvParameters)
 				streamer = NULL;
 			}
 		}
+		//If we dont have a active client connaction it will accept the connection
 		else
 		{
 			rtspClient = rtspServer.accept();
@@ -105,12 +106,14 @@ void rtspTask(void *pvParameters)
 				delay(100);
 			}
 		}
+		//Check if the RTSP sever need to shut down or not.
 		if (stopRTSPserver)
 		{
-			// User requested RTSP server stop
+			//Check if there stil is an RTSP client.
 			if (rtspClient)
 			{
-				Serial.println("Shut down RTSP server");
+				//If this is the case we will notify the client that the server is stopping
+				Serial.println("The ESP32-cam will close the RTSP server your RTSP connection will be closed!");
 				delete session;
 				delete streamer;
 				session = NULL;
@@ -119,7 +122,7 @@ void rtspTask(void *pvParameters)
 
 			stopRTSPserver = false;
 			
-			// Delete this task
+			//Delete task
 			vTaskDelete(NULL);
 		}
 		delay(10);
