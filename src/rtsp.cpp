@@ -28,7 +28,7 @@ WiFiClient rtspClient;
 
 boolean stopRTSPserver = false;
 boolean startRTSPserver = false;
-
+boolean runningRTSPserver = false;
 //Start RTSP task
 void initRTSPServer(void)
 {
@@ -66,7 +66,7 @@ void rtspTask(void *pvParameters)
 	//rtspServer.setNoDelay(true);
 	rtspServer.setTimeout(1);
 	rtspServer.begin();
-
+	runningRTSPserver = true;
 	while (1)
 	{
 		//Check if we have an active client connection
@@ -80,6 +80,11 @@ void rtspTask(void *pvParameters)
 			{ // handle clock rollover
 				session->broadcastCurrentFrame(now);
 				lastimage = now;
+				if (!CameraUser::HubReceiveVideoStream)
+				{
+					CameraUser::HubReceiveVideoStream = true;
+					ApiRequest::updateTransmitVideoStream(CameraUser::HubReceiveVideoStream);
+				}
 			}
 
 			// Handle disconnection from RTSP client
@@ -90,6 +95,8 @@ void rtspTask(void *pvParameters)
 				delete streamer;
 				session = NULL;
 				streamer = NULL;
+				CameraUser::HubReceiveVideoStream = false;
+				ApiRequest::updateTransmitVideoStream(CameraUser::HubReceiveVideoStream);
 			}
 		}
 		//If we dont have a active client connaction it will accept the connection
@@ -121,6 +128,7 @@ void rtspTask(void *pvParameters)
 			}
 
 			stopRTSPserver = false;
+			runningRTSPserver = false;
 			
 			//Delete task
 			vTaskDelete(NULL);
