@@ -69,11 +69,9 @@ String ApiRequest::login() {
 }
 
 boolean ApiRequest::updateTransmitVideoStream(bool transmitVideoStream) {
-
     if((clock() - CameraUser::JwtTime) > 3600000){
         login();
     }
-
 
     if(CameraUser::JwtToken.compareTo("")){
         String transmitStatusString = "false";
@@ -96,6 +94,33 @@ boolean ApiRequest::updateTransmitVideoStream(bool transmitVideoStream) {
         }
         else {
             Serial.println("Error on HTTP request");
+            http.end();
+        }
+    }
+    
+    return false;
+}
+
+boolean ApiRequest::updateLocalIp() {
+    if((clock() - CameraUser::JwtTime) > 3600000){
+        login();
+    }
+
+    if(CameraUser::JwtToken.compareTo("")){
+        //Making json for the login request with username and password.
+        HTTPClient http;
+        http.begin(apiUrl+cameraPath+"/update/LocalIp?localIp="+CameraUser::LocalIp);
+        http.addHeader("Authorization", "Bearer " + CameraUser::JwtToken);
+        int httpCode = http.POST("");
+
+        if (httpCode == HTTP_CODE_OK) {
+            String statusStringRequest = http.getString();
+            Serial.println("Update Local Ip: "+statusStringRequest);
+            http.end();
+            return true;
+        }
+        else {
+            Serial.println("Error on update local ip HTTP request");
             http.end();
         }
     }
@@ -144,6 +169,5 @@ StatusObject ApiRequest::getSystemState(String jwtToken) {
     else{
         Serial.println("Token is not Valid");
     }
-    
     return result;
 }

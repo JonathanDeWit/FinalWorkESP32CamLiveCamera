@@ -18,6 +18,7 @@ public:
     static String login();
     static StatusObject getSystemState(String jwtToken);
     static boolean updateTransmitVideoStream(bool transmitVideoStream);
+    static boolean updateLocalIp();
 };
 
 #endif

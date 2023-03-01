@@ -38,6 +38,7 @@ void setup() {
   Serial.println("IP address: ");
   CameraUser::LocalIp = WiFi.localIP().toString();
   Serial.println(CameraUser::LocalIp);
+  ApiRequest::updateLocalIp();
   
   
   //Try to login and get JWT token
@@ -76,6 +77,7 @@ void setup() {
 
 long begTime = clock();
 int temp = 10000;
+int delayTime = 10000;
 
 void loop() {
 
@@ -90,7 +92,7 @@ void loop() {
   }
 
 
-  if((clock() - begTime) > 30000){
+  if((clock() - begTime) > delayTime){
     status = ApiRequest::getSystemState(CameraUser::JwtToken);
 
     if(status.requestSucseed){
@@ -100,6 +102,7 @@ void loop() {
     //Check if the camera needs to start the live stream
     if (status.sysState && status.requestSucseed && status.sysState != runningRTSPserver){
       initRTSPServer();
+      delayTime = 30000;
       Serial.print("Stream Link: rtsp://");
       Serial.print(WiFi.localIP());
       Serial.println(":8554/mjpeg/1\n");
@@ -109,6 +112,7 @@ void loop() {
     else if(!status.sysState && status.requestSucseed && status.sysState != runningRTSPserver){
       Serial.println("End Server");
       stopRTSPServer();
+      delayTime = 10000;
     }
     //Print the current state
     else{
@@ -122,7 +126,13 @@ void loop() {
       else{
         Serial.println("Server is not running");
       }
+
+      if(CameraUser::LocalIp.compareTo(WiFi.localIP().toString())){
+        CameraUser::LocalIp = WiFi.localIP().toString();
+        ApiRequest::updateLocalIp();
+      }
     }
+
     begTime = clock();
   }
 }
