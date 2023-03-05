@@ -38,7 +38,7 @@ void setup() {
   Serial.println("IP address: ");
   CameraUser::LocalIp = WiFi.localIP().toString();
   Serial.println(CameraUser::LocalIp);
-  ApiRequest::updateLocalIp();
+  
   
   
   //Try to login and get JWT token
@@ -52,7 +52,7 @@ void setup() {
   }
   //xTaskCreate(apiRequestTask,"ApiRequestTask", 4096, NULL, 2, NULL);
 
-  
+  ApiRequest::updateLocalIp();
   status = ApiRequest::getSystemState(CameraUser::JwtToken);
 
   if(status.requestSucseed){

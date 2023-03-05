@@ -109,6 +109,8 @@ boolean ApiRequest::updateLocalIp() {
     if(CameraUser::JwtToken.compareTo("")){
         //Making json for the login request with username and password.
         HTTPClient http;
+        Serial.println("-----InFunction-----");
+        Serial.println("try to Update Local Ip: "+CameraUser::LocalIp);
         http.begin(apiUrl+cameraPath+"/update/LocalIp?localIp="+CameraUser::LocalIp);
         http.addHeader("Authorization", "Bearer " + CameraUser::JwtToken);
         int httpCode = http.POST("");
@@ -151,7 +153,7 @@ StatusObject ApiRequest::getSystemState(String jwtToken) {
             DeserializationError err = deserializeJson(jsonDoc,statusStringRequest);
             if (!err) {
                 const bool sysState = jsonDoc["SysState"];
-                const bool diviceHasUser = jsonDoc["DiviceHasUser"];
+                const bool diviceHasUser = jsonDoc["DeviceHasUser"];
                 result.sysState = sysState;
                 result.diviceHasUser = diviceHasUser;
                 result.requestSucseed = true;
