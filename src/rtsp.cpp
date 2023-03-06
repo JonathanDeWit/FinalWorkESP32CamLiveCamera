@@ -67,6 +67,9 @@ void rtspTask(void *pvParameters)
 	rtspServer.setTimeout(1);
 	rtspServer.begin();
 	runningRTSPserver = true;
+	CameraUser::HubReceiveVideoStream = true;
+	ApiRequest::updateTransmitVideoStream(CameraUser::HubReceiveVideoStream);
+				
 	while (1)
 	{
 		//Check if we have an active client connection
@@ -80,11 +83,6 @@ void rtspTask(void *pvParameters)
 			{ // handle clock rollover
 				session->broadcastCurrentFrame(now);
 				lastimage = now;
-				if (!CameraUser::HubReceiveVideoStream)
-				{
-					CameraUser::HubReceiveVideoStream = true;
-					ApiRequest::updateTransmitVideoStream(CameraUser::HubReceiveVideoStream);
-				}
 			}
 
 			// Handle disconnection from RTSP client
