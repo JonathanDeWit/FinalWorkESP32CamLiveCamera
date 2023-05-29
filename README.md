@@ -6,10 +6,10 @@ If you want to know more about the project, I invite you to consult the followin
 [Final Work Paper](https://github.com/JonathanDeWit/FinalWorkESP32CamLiveCamera/blob/master/FinalWorkPaper.pdf) (NL)
 
 Other related repositories:
-* [Android App](https://github.com/JonathanDeWit/FinalWorkAndroidApp)
 * [ASP.NET API](https://github.com/JonathanDeWit/FinalWorkApi)
 * [Raspberry PI automated video convertor](https://github.com/JonathanDeWit/FinalWorkRaspberryPiConvertor)
 * [SRT Media server automation](https://github.com/JonathanDeWit/FinalWorkSrtServer)
+* [Android App](https://github.com/JonathanDeWit/FinalWorkAndroidApp)
 
  ## Purpose
 This GitHub repo contains an PlatformIO project meant for an ESP32-CAM board.
