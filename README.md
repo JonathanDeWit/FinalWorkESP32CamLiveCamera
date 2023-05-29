@@ -3,6 +3,13 @@ This project is part of my Final Work project for my Bachelor degree in Applied 
 My project mainly consisted of building a video surveillance system by using microcontrollers.
 If you want to know more about the project, I invite you to consult the following links:
 
+[Final Work Paper](https://github.com/JonathanDeWit/FinalWorkESP32CamLiveCamera/blob/master/FinalWorkPaper.pdf) (NL)
+
+Other related repositories:
+* [Android App](https://github.com/JonathanDeWit/FinalWorkAndroidApp)
+* [ASP.NET API](https://github.com/JonathanDeWit/FinalWorkApi)
+* [Raspberry PI automated video convertor](https://github.com/JonathanDeWit/FinalWorkRaspberryPiConvertor)
+* [SRT Media server automation](https://github.com/JonathanDeWit/FinalWorkSrtServer)
 
  ## Purpose
 This GitHub repo contains an PlatformIO project meant for an ESP32-CAM board.
